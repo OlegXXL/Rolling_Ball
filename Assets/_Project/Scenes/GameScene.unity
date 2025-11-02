@@ -913,7 +913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MoveSpeed>k__BackingField: 20
-  <MaxVelocity>k__BackingField: 20
+  <MaxVelocity>k__BackingField: 50
 --- !u!1 &573888237
 GameObject:
   m_ObjectHideFlags: 0

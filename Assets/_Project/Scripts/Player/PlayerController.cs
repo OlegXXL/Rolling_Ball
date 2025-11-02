@@ -14,6 +14,7 @@ namespace Project.Player
         private readonly float _airControlMultiplier;
 
         private bool _isGrounded;
+        private bool _movementEnabled = true;           
 
         public PlayerController(
             Rigidbody rigidbody,
@@ -29,7 +30,7 @@ namespace Project.Player
 
         public void Move(Vector2 input)
         {
-            if (_rigidbody == null) return;
+            if (_rigidbody == null || !_movementEnabled) return;
 
             // Detect if player is grounded
             _isGrounded = Physics.Raycast(_rigidbody.position, Vector3.down, 1.05f);
@@ -52,12 +53,30 @@ namespace Project.Player
         }
 
         /// <summary>
-        /// Stops player movement completely
+        /// Disables player movement completely
+        /// </summary>
+        public void DisableMovement()
+        {
+            _movementEnabled = false;
+        }
+
+        /// <summary>
+        /// Enables player movement
+        /// </summary>
+        public void EnableMovement()
+        {
+            _movementEnabled = true;
+        }
+
+        /// <summary>
+        /// Stops player movement completely and disables further movement
         /// </summary>
         public void Stop()
         {
+            _movementEnabled = false;
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.angularVelocity = Vector3.zero;
+            _rigidbody.Sleep();
         }
     }
 }

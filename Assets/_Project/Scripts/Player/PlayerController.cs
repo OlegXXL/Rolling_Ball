@@ -3,37 +3,56 @@ using UnityEngine;
 namespace Project.Player
 {
     /// <summary>
-    /// Controller managing player movement and physics interactions.
+    /// Handles realistic player movement with Rigidbody physics.
+    /// Uses AddForce for acceleration and limits control in the air.
     /// </summary>
     public class PlayerController
     {
         private readonly Rigidbody _rigidbody;
-        private readonly float _moveSpeed;
+        private readonly float _moveForce;
         private readonly float _maxVelocity;
+        private readonly float _airControlMultiplier;
 
-        public PlayerController(Rigidbody rigidbody, float moveSpeed = 5f, float maxVelocity = 10f)
+        private bool _isGrounded;
+
+        public PlayerController(
+            Rigidbody rigidbody,
+            float moveForce = 15f,
+            float maxVelocity = 8f,
+            float airControlMultiplier = 0.3f)
         {
             _rigidbody = rigidbody;
-            _moveSpeed = moveSpeed;
+            _moveForce = moveForce;
             _maxVelocity = maxVelocity;
+            _airControlMultiplier = airControlMultiplier;
         }
 
         public void Move(Vector2 input)
         {
-            Debug.Log(_rigidbody);
             if (_rigidbody == null) return;
 
-            Vector3 force = new Vector3(input.x, 0, input.y) * _moveSpeed;
-            _rigidbody.AddForce(force, ForceMode.Force);
+            // Detect if player is grounded
+            _isGrounded = Physics.Raycast(_rigidbody.position, Vector3.down, 1.05f);
 
-            if (_rigidbody.velocity.magnitude > _maxVelocity)
+            Vector3 moveDir = new Vector3(input.x, 0f, input.y).normalized;
+
+            // Reduce control while not grounded
+            float controlFactor = _isGrounded ? 1f : _airControlMultiplier;
+
+            // Apply acceleration-based force
+            _rigidbody.AddForce(moveDir * _moveForce * controlFactor, ForceMode.Acceleration);
+
+            // Limit max horizontal velocity
+            Vector3 horizontalVelocity = new Vector3(_rigidbody.velocity.x, 0, _rigidbody.velocity.z);
+            if (horizontalVelocity.magnitude > _maxVelocity)
             {
-                _rigidbody.velocity = _rigidbody.velocity.normalized * _maxVelocity;
+                Vector3 limitedVel = horizontalVelocity.normalized * _maxVelocity;
+                _rigidbody.velocity = new Vector3(limitedVel.x, _rigidbody.velocity.y, limitedVel.z);
             }
-            Debug.Log("Moving");
         }
+
         /// <summary>
-        /// Stops the player's movement.
+        /// Stops player movement completely
         /// </summary>
         public void Stop()
         {

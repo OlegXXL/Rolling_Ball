@@ -27,7 +27,7 @@ namespace Project.Lifetime
             builder.Register<PlayerController>(resolver =>
             {
                 var view = resolver.Resolve<PlayerView>();
-                return new PlayerController(view.Rigidbody, view.MoveSpeed, view.MaxVelocity);
+                return new PlayerController(view.Rigidbody, view.MoveForce, view.MaxVelocity, view.AirControlMultiplier);
             }, Singleton);
             
             Debug.Log("Configure");

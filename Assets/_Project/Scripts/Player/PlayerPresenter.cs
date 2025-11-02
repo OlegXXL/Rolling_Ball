@@ -1,5 +1,6 @@
 using Project.Input;
 using Project.Services.SaveSystem;
+using System;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -18,6 +19,8 @@ namespace Project.Player
         private readonly PlayerView _view;
 
         private Vector2 _pendingInput = Vector2.zero;
+
+        public static event Action OnCoinCollected;
 
         public PlayerPresenter(
             IPlayerInput input,
@@ -61,6 +64,9 @@ namespace Project.Player
             coins++;
             _saveService.Save("coins", coins);
             Debug.Log($"[PlayerPresenter] Coin collected! Total coins: {coins}");
+            
+            // Notify UI that a coin was collected
+            OnCoinCollected?.Invoke();
         }
     }
 }

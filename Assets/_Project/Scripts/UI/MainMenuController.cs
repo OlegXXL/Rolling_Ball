@@ -33,7 +33,7 @@ namespace Project.UI
         {
             if (_saveService == null) return;
             int coins = _saveService.Load("coins", 0);
-            coinText.text = $"Total Coins: {coins}";
+            coinText.text = $"{coins}";
         }
 
             private async void OnPlayClicked()

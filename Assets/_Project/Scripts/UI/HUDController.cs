@@ -1,3 +1,4 @@
+using Project.Player;
 using Project.Services.SaveSystem;
 using Project.Services.SceneManagement;
 using UnityEngine;
@@ -25,12 +26,21 @@ namespace Project.UI
         {
             UpdateCoinsUI();
             restartButton.onClick.AddListener(OnRestartButtonClicked);
+            
+            // Subscribe to coin collection event
+            PlayerPresenter.OnCoinCollected += UpdateCoinsUI;
+        }
+
+        private void OnDestroy()
+        {
+            // Unsubscribe to avoid memory leaks
+            PlayerPresenter.OnCoinCollected -= UpdateCoinsUI;
         }
 
         public void UpdateCoinsUI()
         {
             int coins = _saveService.Load("coins", 0);
-            coinText.text = $"Coins: {coins}";
+            coinText.text = $"{coins}";
         }
         private void OnRestartButtonClicked()
         {

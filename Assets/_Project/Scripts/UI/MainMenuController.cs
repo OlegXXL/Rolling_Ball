@@ -3,6 +3,7 @@ using Project.Services.SaveSystem;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
+using DG.Tweening;
 
 namespace Project.UI
 {
@@ -14,7 +15,7 @@ namespace Project.UI
 
         private ISceneLoader _sceneLoader;
         private ISaveService _saveService;
-
+        
         [Inject]
         public void Construct(ISceneLoader sceneLoader, ISaveService saveService)
         {
@@ -27,6 +28,20 @@ namespace Project.UI
             playButton.onClick.AddListener(OnPlayClicked);
             exitButton.onClick.AddListener(OnExitClicked);
             UpdateCoinsUI();
+            PlayIntroAnimation();
+        }
+        private void PlayIntroAnimation()
+        {
+            playButton.transform.localScale = Vector3.zero;
+            exitButton.transform.localScale = Vector3.zero;
+
+            Sequence introSequence = DOTween.Sequence();
+
+            // Add animations in sequence with slight delays
+            introSequence.Append(playButton.transform.DOScale(Vector3.one, 0.6f).SetEase(Ease.OutBack))
+                        .Append(exitButton.transform.DOScale(Vector3.one, 0.6f).SetEase(Ease.OutBack));
+
+            introSequence.Play();
         }
 
         private void UpdateCoinsUI()

@@ -2831,6 +2831,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinsText: {fileID: 2121163534}
+  restartButton: {fileID: 1326054381}
+  menuButton: {fileID: 936097520}
 --- !u!1 &2075235379
 GameObject:
   m_ObjectHideFlags: 0

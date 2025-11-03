@@ -26,7 +26,7 @@
 ---
 
 ## ⏱ Development Time
-- Total development time: **16 hours**
+- Total development time: **21 hours**
 
 ---
 

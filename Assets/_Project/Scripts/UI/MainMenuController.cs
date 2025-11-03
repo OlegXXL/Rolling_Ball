@@ -53,7 +53,7 @@ namespace Project.UI
 
             private async void OnPlayClicked()
             {
-                await _sceneLoader.LoadSceneAsync("GameScene");
+                await _sceneLoader.LoadSceneAsync("Level1");
             }
 
             private void OnExitClicked()
